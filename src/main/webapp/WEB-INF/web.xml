@@ -11,6 +11,13 @@
 		<param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
 	</context-param>
 
+	<!-- Web 应用根目录以该属性名添加到系统参数中 -->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>microon.root</param-value>
+	</context-param>
+
+
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -36,6 +43,13 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
+
+	<!-- WebAppRootListener 可以将 Web 应用根目录添加到系统参数中， 对应的属性名可以通过名为“webAppRootKey”的 
+		Servlet 上下文参数指定，默认为“webapp.root”。 -->
+	<listener>
+		<listener-class>org.springframework.web.util.WebAppRootListener</listener-class>
+	</listener>
+
 
 	<servlet>
 		<description>microon</description>
