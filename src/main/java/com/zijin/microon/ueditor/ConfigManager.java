@@ -10,47 +10,59 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.ServletContextAware;
 
-public final class ConfigManager {
-	
+/**
+ * @author 李大虾 2015年7月25日 上午8:56:52 ConfigManager Ueditor 前后端配置文件管理
+ */
+@Component
+public  class ConfigManager implements ServletContextAware {
+
 	private static Log log = LogFactory.getLog(ConfigManager.class);
 
-	private final String rootPath;
-	private final String originalPath;
-	private final String contextPath;
-	private static final String configFileName = "config.json";
+	private  String rootPath;
+	private  String originalPath;
+	private  String contextPath;
 	private String parentPath = null;
+
 	private JSONObject jsonConfig = null;
+
+	private static final String configFileName = "config.json";
 	private static final String SCRAWL_FILE_NAME = "scrawl";
 	private static final String REMOTE_FILE_NAME = "remote";
 
-	private ConfigManager(String rootPath, String contextPath, String uri)
-			throws FileNotFoundException, IOException {
+	
+	public ConfigManager() {
+		super();
+	}
+
+	private ConfigManager(String rootPath, String contextPath, String uri) throws FileNotFoundException, IOException {
 		rootPath = rootPath.replace("\\", "/");
 
 		this.rootPath = rootPath;
 		this.contextPath = contextPath;
 
 		if (contextPath.length() > 0)
-			this.originalPath = (this.rootPath + uri.substring(contextPath
-					.length()));
+			this.originalPath = (this.rootPath + uri.substring(contextPath.length()));
 		else {
 			this.originalPath = (this.rootPath + uri);
 		}
-		
-		log.info("rootPath:"+this.rootPath);
-		log.info("contextPath:"+this.contextPath);
-		log.info("originalPath:"+this.originalPath);
+
+		log.info("rootPath:" + this.rootPath);
+		log.info("contextPath:" + this.contextPath);
+		log.info("originalPath:" + this.originalPath);
 
 		initEnv();
 	}
 
-	public static ConfigManager getInstance(String rootPath,
-			String contextPath, String uri) {
+	public static ConfigManager getInstance(String rootPath, String contextPath, String uri) {
 		try {
 			return new ConfigManager(rootPath, contextPath, uri);
 		} catch (Exception e) {
@@ -73,31 +85,27 @@ public final class ConfigManager {
 		switch (type) {
 		case 4:
 			conf.put("isBase64", "false");
-			conf.put("maxSize",
-					Long.valueOf(this.jsonConfig.getLong("fileMaxSize")));
+			conf.put("maxSize", Long.valueOf(this.jsonConfig.getLong("fileMaxSize")));
 			conf.put("allowFiles", getArray("fileAllowFiles"));
 			conf.put("fieldName", this.jsonConfig.getString("fileFieldName"));
 			savePath = this.jsonConfig.getString("filePathFormat");
 			break;
 		case 1:
 			conf.put("isBase64", "false");
-			conf.put("maxSize",
-					Long.valueOf(this.jsonConfig.getLong("imageMaxSize")));
+			conf.put("maxSize", Long.valueOf(this.jsonConfig.getLong("imageMaxSize")));
 			conf.put("allowFiles", getArray("imageAllowFiles"));
 			conf.put("fieldName", this.jsonConfig.getString("imageFieldName"));
 			savePath = this.jsonConfig.getString("imagePathFormat");
 			break;
 		case 3:
-			conf.put("maxSize",
-					Long.valueOf(this.jsonConfig.getLong("videoMaxSize")));
+			conf.put("maxSize", Long.valueOf(this.jsonConfig.getLong("videoMaxSize")));
 			conf.put("allowFiles", getArray("videoAllowFiles"));
 			conf.put("fieldName", this.jsonConfig.getString("videoFieldName"));
 			savePath = this.jsonConfig.getString("videoPathFormat");
 			break;
 		case 2:
 			conf.put("filename", "scrawl");
-			conf.put("maxSize",
-					Long.valueOf(this.jsonConfig.getLong("scrawlMaxSize")));
+			conf.put("maxSize", Long.valueOf(this.jsonConfig.getLong("scrawlMaxSize")));
 			conf.put("fieldName", this.jsonConfig.getString("scrawlFieldName"));
 			conf.put("isBase64", "true");
 			savePath = this.jsonConfig.getString("scrawlPathFormat");
@@ -105,24 +113,20 @@ public final class ConfigManager {
 		case 5:
 			conf.put("filename", "remote");
 			conf.put("filter", getArray("catcherLocalDomain"));
-			conf.put("maxSize",
-					Long.valueOf(this.jsonConfig.getLong("catcherMaxSize")));
+			conf.put("maxSize", Long.valueOf(this.jsonConfig.getLong("catcherMaxSize")));
 			conf.put("allowFiles", getArray("catcherAllowFiles"));
-			conf.put("fieldName", this.jsonConfig.getString("catcherFieldName")
-					+ "[]");
+			conf.put("fieldName", this.jsonConfig.getString("catcherFieldName") + "[]");
 			savePath = this.jsonConfig.getString("catcherPathFormat");
 			break;
 		case 7:
 			conf.put("allowFiles", getArray("imageManagerAllowFiles"));
 			conf.put("dir", this.jsonConfig.getString("imageManagerListPath"));
-			conf.put("count", Integer.valueOf(this.jsonConfig
-					.getInt("imageManagerListSize")));
+			conf.put("count", Integer.valueOf(this.jsonConfig.getInt("imageManagerListSize")));
 			break;
 		case 6:
 			conf.put("allowFiles", getArray("fileManagerAllowFiles"));
 			conf.put("dir", this.jsonConfig.getString("fileManagerListPath"));
-			conf.put("count", Integer.valueOf(this.jsonConfig
-					.getInt("fileManagerListSize")));
+			conf.put("count", Integer.valueOf(this.jsonConfig.getInt("fileManagerListSize")));
 		}
 
 		conf.put("savePath", savePath);
@@ -140,6 +144,7 @@ public final class ConfigManager {
 
 		this.parentPath = file.getParent();
 
+		log.info("parentPath:" + this.parentPath);
 		String configContent = readFile(getConfigPath());
 		try {
 			JSONObject jsonConfig = new JSONObject(configContent);
@@ -168,8 +173,7 @@ public final class ConfigManager {
 	private String readFile(String path) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		try {
-			InputStreamReader reader = new InputStreamReader(
-					new FileInputStream(path), "UTF-8");
+			InputStreamReader reader = new InputStreamReader(new FileInputStream(path), "UTF-8");
 			BufferedReader bfReader = new BufferedReader(reader);
 
 			String tmpContent = null;
@@ -180,12 +184,28 @@ public final class ConfigManager {
 
 			bfReader.close();
 		} catch (UnsupportedEncodingException localUnsupportedEncodingException) {
+			log.error(localUnsupportedEncodingException);
 		}
 
 		return filter(builder.toString());
 	}
 
+	
+	/**
+	 * 过滤文件中的块注释
+	 * @author 李大虾  2015年7月25日 上午11:25:36
+	 * @param input
+	 * @return
+	 */
 	private String filter(String input) {
 		return input.replaceAll("/\\*[\\s\\S]*?\\*/", "");
+	}
+
+
+	public void setServletContext(ServletContext servletContext) {
+		this.rootPath=servletContext.getRealPath("/");
+		this.contextPath=servletContext.getContextPath();
+		log.debug("rootpath:"+this.rootPath);
+		log.debug("contextPath:"+this.contextPath);
 	}
 }

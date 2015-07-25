@@ -1,13 +1,15 @@
 package com.zijin.microon.model;
 
+import java.util.Date;
+
 public class User {
     private Integer id;
 
     private String name;
 
-    private Integer score;
+    private String password;
 
-    private String description;
+    private Date birthday;
 
     public Integer getId() {
         return id;
@@ -25,19 +27,19 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getScore() {
-        return score;
+    public String getPassword() {
+        return password;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
-    public String getDescription() {
-        return description;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }
