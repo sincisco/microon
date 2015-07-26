@@ -2,6 +2,8 @@ package com.zijin.microon.controller;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +18,8 @@ import com.zijin.microon.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 
+	private static Log log=LogFactory.getLog(UserController.class);
+	
 	@Autowired
 	private UserService userService;
 	
