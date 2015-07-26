@@ -1,0 +1,16 @@
+{
+  "name": "microon",
+  "version": "0.0.0",
+  "authors": [
+    "李爱东 <1158889685@qq.com>"
+  ],
+  "description": "开源知识库系统",
+  "keywords": [
+    "blogs"
+  ],
+  "license": "MIT",
+  "homepage": "www.microon.wang",
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}

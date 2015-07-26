@@ -1,0 +1,30 @@
+{
+	"name":"microon",
+	"version":"1.0.0",
+	"author":"1158889685@qq.com 李大虾",
+	"license":"ISC",
+	"description":"开源知识库系统",
+	"main":"index.js",
+	"devDependencies":{
+		"grunt":"^0.4.5",
+		"grunt-contrib-clean":"^0.6.0",
+		"grunt-contrib-concat":"^0.5.1",
+		"grunt-contrib-copy":"^0.8.0",
+		"grunt-contrib-watch":"^0.6.1"
+	},
+	"scripts":{
+		"test":"echo \"Error: no test specified\" && exit 1"
+	},
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/sincisco/microon.git"
+	},
+	"keywords":[
+		"知识库",
+		"开源"
+	],
+	"bugs":{
+		"url":"https://github.com/sincisco/microon/issues"
+	},
+	"homepage":"https://github.com/sincisco/microon"
+}
