@@ -1,6 +1,7 @@
 package com.zijin.microon.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +29,7 @@ public class ArticleController {
 	public String saveArticle(ModelMap modelMap, HttpServletRequest request) {
 		Article article = new Article();
 		article.setIssuedate(new Date());
-		article.setTitle("未知");
+		article.setTitle(request.getParameter("title"));
 		article.setContent(request.getParameter("content"));
 		articleService.insert(article);
 		modelMap.addAttribute("article", article);
@@ -38,8 +39,11 @@ public class ArticleController {
 	@RequestMapping("/viewArticle/{articleNo}")
 	public String getArticle(ModelMap modelMap, 
 			HttpServletRequest request, @PathVariable Integer articleNo) {
+		List<Article> articles=articleService.getArticles();
 		Article article=articleService.getActicleById(articleNo);
 		modelMap.addAttribute("article", article);
+		modelMap.addAttribute("articleList", articles);
+		log.info("article Num"+articles.size());
 		return "article/articleTemplate";
 	}
 

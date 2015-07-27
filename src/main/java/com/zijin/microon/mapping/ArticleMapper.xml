@@ -23,6 +23,10 @@
     from article
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="queryAllArticle"  resultMap="ResultMapWithBLOBs" >
+        select * from article
+  </select>
+ 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from article
     where id = #{id,jdbcType=INTEGER}

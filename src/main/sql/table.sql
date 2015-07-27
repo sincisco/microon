@@ -22,9 +22,9 @@ primary key(id)
 );
 
 #文章修改历史  文章修改前，对文章内容进行全量保存
-create table if not exists article (
+create table if not exists article_edit_history (
 id int(11) NOT NULL auto_increment,
-title varchar(80),
+title varchar(80),  
 content MEDIUMTEXT,
 reviseDate date,  #修改时间
 modifierNo int,   #文章修改人  外键

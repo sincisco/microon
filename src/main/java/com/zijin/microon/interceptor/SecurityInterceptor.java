@@ -41,18 +41,21 @@ public class SecurityInterceptor implements HandlerInterceptor {
 		// http://stackoverflow.com/questions/9908124/spring-mvc-3-interceptor-on-all-excluding-some-defined-paths
 		String requestUri = request.getRequestURI();
 		log.debug(requestUri);
+		
 		for (String url : excludedUrls) {
 			if (requestUri.endsWith(url)) {
 				return true;
 			}
 		}
 
+		
 		// intercept
 		HttpSession session = request.getSession();
 		if (session.getAttribute("user") == null) {
+			return true;
 			// see
 			// http://stackoverflow.com/questions/12713873/spring-3-1-how-do-you-send-all-exception-to-one-page
-			throw new AuthorizationException();
+			//throw new AuthorizationException();
 		} else {
 			return true;
 		}

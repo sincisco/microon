@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -10,7 +14,8 @@
 	type="text/css" rel="stylesheet">
 <script type="text/javascript" src="../../ueditor/ueditor.parse.js"></script>
 <title>${article.title}</title>
-<link href="../../ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"
+<link
+	href="../../ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"
 	type="text/css" rel="stylesheet" id="syntaxhighlighter_css">
 <script type="text/javascript"
 	src="../../ueditor/third-party/SyntaxHighlighter/shCore.js"
@@ -35,10 +40,7 @@ p {
 </style>
 <link rel="stylesheet" type="text/css"
 	href="http://localhost:8080/microon/ueditor/themes/iframe.css">
-		<script type="text/javascript">
-	console.log(window.document);
-	SyntaxHighlighter.all();
-	</script>
+
 <style id="tablesort">
 table.sortEnabled tr.firstRow th, table.sortEnabled tr.firstRow td {
 	padding-right: 20px;
@@ -105,9 +107,7 @@ ol, ul {
 	width: 95%
 }
 
-li {
-	clear: both;
-}
+
 
 li.list-cn-1-0 {
 	background-image: url(http://bs.baidu.com/listicon/list-cn-1-0.gif)
@@ -2700,8 +2700,63 @@ body {
 }
 </style>
 
+<link rel="stylesheet" type="text/css"
+	href="../../style/articleTemplate.css">
 </head>
 <body>
-${article.content}
+	<div style="float: left; width: 20%">
+		<div id="secondary" class="secondary">
+			<div id="widget-area" class="widget-area" role="complementary">
+				<aside id="categories-4" class="widget widget_categories">
+					<h2 class="widget-title">分类目录</h2>
+					<ul>
+						<li class="cat-item cat-item-4"><a
+							href="#"
+							title="学海无涯">学习</a>
+							<ul class="children">
+								<li class="cat-item cat-item-106"><a
+									href="#">管理旁通</a>
+								</li>
+								<li class="cat-item cat-item-132"><a
+									href="#"
+									title="随便读点什么，充实一下自己">读书</a></li>
+								<li class="cat-item cat-item-27"><a
+									href="#"
+									title="通信，让生活更美好！">通信技术</a></li>
+							</ul></li>
+						<li class="cat-item cat-item-5"><a
+							href="#">工作</a>
+							<ul class="children">
+							<c:forEach var="articleItem" items="${articleList}">
+								<li class="cat-item cat-item-255"><a title="${articleItem.title}" href="${articleItem.id}.do">${articleItem.title}</a></li>
+							</c:forEach>
+							</ul>
+						</li>
+						<li class="cat-item cat-item-6"><a
+							href="#"
+							title="随便记点什么">杂文</a>
+							<ul class="children">
+								<li class="cat-item cat-item-255"><a
+									href="#"
+									title="我申明本栏目所有文章都是在我神志不清的情况下转载或者发表的，对此我不负责任。">我这个时代</a></li>
+								<li class="cat-item cat-item-404"><a
+									href="#"
+									title="记录与香港有关的所见所想，有好有坏。">香港见闻</a></li>
+							</ul></li>
+
+					</ul>
+				</aside>
+			</div>
+		</div>
+	</div>
+	<article style="margin-left: 21%;padding:5%">
+		<h1>${articleItem.title}</h1>
+		${article.content}
+	</article>
+
 </body>
+<script type="text/javascript">
+	console.log(window.document);
+	SyntaxHighlighter.all();
+</script>
 </html>

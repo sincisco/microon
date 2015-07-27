@@ -1,5 +1,7 @@
 package com.zijin.microon.dao;
 
+import java.util.List;
+
 import com.zijin.microon.model.Article;
 
 public interface ArticleMapper {
@@ -10,6 +12,8 @@ public interface ArticleMapper {
     int insertSelective(Article record);
 
     Article selectByPrimaryKey(Integer id);
+    
+    List<Article> queryAllArticle();
 
     int updateByPrimaryKeySelective(Article record);
 

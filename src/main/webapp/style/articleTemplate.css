@@ -1,0 +1,48 @@
+.site-header {
+	background-color: transparent;
+	border-bottom: 0px none;
+	margin: 20% 0px;
+	padding: 0px 20%;
+}
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+.widget {
+	color: rgba(51, 51, 51, 0.7);
+	-moz-hyphens: auto;
+	word-wrap: break-word;
+	line-height: 1.5;
+	margin: 0px 0px 20%;
+	padding: 0px 20%;
+}
+
+.widget-title {
+	color: #333;
+	font-family: "Noto Sans", sans-serif;
+	margin: 0px 0px 1.6em;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	margin: 0px 0px 1.5em;
+}
+
+.widget_categories li:first-child {
+	border-top: 0px none;
+	padding-top: 0px;
+}
+
+.widget_categories li {
+	padding: 0.5em 0px;
+	border-top: 1px solid rgba(51, 51, 51, 0.1);
+}
+
+.widget_categories ul {
+	list-style: outside none none;
+}
+
+.widget_categories .children {
+	margin: 0.5em 0px 0px 1em;
+	padding-top: 0.5em;
+}

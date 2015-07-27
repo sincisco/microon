@@ -22,6 +22,7 @@
     <h1>文章编辑器</h1>
     <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
 </div>
+文章标题：<input type="text" id="articleTitle"/>
 <div id="btns">
     <div>
         <button onclick="getAllHtml()">获得整个html的内容</button>
@@ -94,8 +95,10 @@
         arr.push("使用editor.getContent()方法可以获得编辑器的内容");
         arr.push("内容为：");
         arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-        var jqxhr = $.post("article/saveArticle.do",{content:UE.getEditor('editor').getContent()}, function() {
+        //alert(arr.join("\n"));
+        alert($("#articleTitle").val());
+        var jqxhr = $.post("article/saveArticle.do",{content:UE.getEditor('editor').getContent(),
+        	title:$("#articleTitle").val()}, function() {
             alert("success");
           })
           .success(function() { alert("second success"); })

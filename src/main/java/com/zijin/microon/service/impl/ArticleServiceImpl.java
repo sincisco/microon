@@ -22,7 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	public List<Article> getArticles() {
 		// TODO Auto-generated method stub
-		return null;
+		return articleMapper.queryAllArticle();
 	}
 
 	public int insert(Article article) {
