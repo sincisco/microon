@@ -11,6 +11,9 @@
   "license": "MIT",
   "homepage": "www.microon.wang",
   "dependencies": {
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "datatables": "~1.10.7",
+    "jquery-easyui-bower": "*"
   }
 }

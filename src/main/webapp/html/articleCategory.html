@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文章分类管理</title>
+<link rel="stylesheet" type="text/css"
+	href="../js-lib/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="../js-lib/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css"
+	href="../js-lib/easyui/themes/color.css">
+<script type="text/javascript" charset="utf-8"
+	src="../js-lib/jquery/jquery.js"></script>
+<script type="text/javascript"
+	src="../js-lib/easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+ <table title="文章分类列表" class="easyui-treegrid" style="width:700px;height:250px" toolbar="#toolbar"
+            data-options="
+                url: '../articleCategory/getAllArticleCategories.do',
+                method: 'get',
+                rownumbers: true,
+                idField: 'id',
+                treeField: 'name'
+            ">
+        <thead>
+            <tr>
+                <th data-options="field:'id'" width="50">分类编号</th>
+                <th data-options="field:'name'" width="200" >分类名称</th>
+                <th data-options="field:'parentid'" width="150">上一级分类</th>
+            </tr>
+        </thead>
+    </table>
+    
+    	<div id="toolbar">
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newObject()">创建分类</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editObject()">修改分类</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyObject()">删除分类</a>
+	</div>
+    
+    	<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+			closed="true" buttons="#dlg-buttons">
+		<div class="ftitle">分类 信息</div>
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>编号:</label>
+				<input name=id class="easyui-textbox" >
+			</div>
+			<div class="fitem">
+				<label>上级编号:</label>
+				  <input name="parentId" class="easyui-combotree" data-options="url:'../articleCategory/getAllArticleCategories.do',method:'get',required:true" style="width:200px;">
+			</div>
+			<div class="fitem">
+				<label>分类名称:</label>
+				<input name="name" class="easyui-textbox">
+			</div>
+			<div class="fitem">
+				<label>Email:</label>
+				<input name="email" class="easyui-textbox" >
+			</div>
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveObject()" style="width:90px">Save</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+	</div>
+</body>
+<script type="text/javascript">
+		var url;
+		function newObject(){
+			$('#dlg').dialog('open').dialog('setTitle','New Object');
+			$('#fm').form('clear');
+			url = '../articleCategory/saveArticleCategory.do';
+		}
+		function editObject(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$('#dlg').dialog('open').dialog('setTitle','Edit Object');
+				$('#fm').form('load',row);
+				url = '../articleCategory/.php?id='+row.id;
+			}
+		}
+		function saveObject(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: 'Error',
+							msg: result.errorMsg
+						});
+					} else {
+						$('#dlg').dialog('close');		// close the dialog
+						$('#dg').datagrid('reload');	// reload the user data
+					}
+				}
+			});
+		}
+		function destroyUser(){
+			var row = $('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+					if (r){
+						$.post('destroy_user.php',{id:row.id},function(result){
+							if (result.success){
+								$('#dg').datagrid('reload');	// reload the user data
+							} else {
+								$.messager.show({	// show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		}
+	</script>
+		<style type="text/css">
+		#fm{
+			margin:0;
+			padding:10px 30px;
+		}
+		.ftitle{
+			font-size:14px;
+			font-weight:bold;
+			padding:5px 0;
+			margin-bottom:10px;
+			border-bottom:1px solid #ccc;
+		}
+		.fitem{
+			margin-bottom:5px;
+		}
+		.fitem label{
+			display:inline-block;
+			width:80px;
+		}
+		.fitem input{
+			width:160px;
+		}
+	</style>
+</html>
