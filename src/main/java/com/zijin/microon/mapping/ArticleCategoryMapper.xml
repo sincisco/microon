@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zijin.microon.dao.ArticleCategoryMapper">
+	<resultMap id="BaseResultMap" type="com.zijin.microon.model.ArticleCategory">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="parentId" property="parentid" jdbcType="INTEGER" />
+		<result column="createDateTime" property="createdatetime"
+			jdbcType="TIMESTAMP" />
+		<result column="creator" property="creator" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, parentId, createDateTime, creator
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from articlecategory
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="queryAllArticleCategories" resultMap="BaseResultMap">
+		select * from articleCategory
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from articlecategory
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zijin.microon.model.ArticleCategory">
+		insert into articlecategory (id, name, parentId,
+		createDateTime, creator)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{parentid,jdbcType=INTEGER},
+		#{createdatetime,jdbcType=TIMESTAMP}, #{creator,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zijin.microon.model.ArticleCategory">
+		insert into articlecategory
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="parentid != null">
+				parentId,
+			</if>
+			<if test="createdatetime != null">
+				createDateTime,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="parentid != null">
+				#{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="createdatetime != null">
+				#{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zijin.microon.model.ArticleCategory">
+		update articlecategory
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="parentid != null">
+				parentId = #{parentid,jdbcType=INTEGER},
+			</if>
+			<if test="createdatetime != null">
+				createDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zijin.microon.model.ArticleCategory">
+		update articlecategory
+		set name = #{name,jdbcType=VARCHAR},
+		parentId = #{parentid,jdbcType=INTEGER},
+		createDateTime = #{createdatetime,jdbcType=TIMESTAMP},
+		creator = #{creator,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

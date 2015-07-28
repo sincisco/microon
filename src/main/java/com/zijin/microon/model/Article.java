@@ -9,7 +9,7 @@ public class Article {
 
     private Date issuedate;
 
-    private String content;
+    private Integer authorno;
 
     public Integer getId() {
         return id;
@@ -35,11 +35,11 @@ public class Article {
         this.issuedate = issuedate;
     }
 
-    public String getContent() {
-        return content;
+    public Integer getAuthorno() {
+        return authorno;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setAuthorno(Integer authorno) {
+        this.authorno = authorno;
     }
 }

@@ -3,21 +3,22 @@ package com.zijin.microon.dao;
 import java.util.List;
 
 import com.zijin.microon.model.Article;
+import com.zijin.microon.model.ArticleWithBLOBs;
 
 public interface ArticleMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Article record);
+    int insert(ArticleWithBLOBs record);
 
-    int insertSelective(Article record);
+    int insertSelective(ArticleWithBLOBs record);
 
-    Article selectByPrimaryKey(Integer id);
+    ArticleWithBLOBs selectByPrimaryKey(Integer id);
     
     List<Article> queryAllArticle();
 
-    int updateByPrimaryKeySelective(Article record);
+    int updateByPrimaryKeySelective(ArticleWithBLOBs record);
 
-    int updateByPrimaryKeyWithBLOBs(Article record);
+    int updateByPrimaryKeyWithBLOBs(ArticleWithBLOBs record);
 
     int updateByPrimaryKey(Article record);
-}
+}   

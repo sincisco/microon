@@ -1,16 +1,16 @@
 package com.zijin.microon.model;
 
 public class ArticleWithBLOBs extends Article {
-    private Integer id;
+    private String outline;
 
     private String content;
 
-    public Integer getId() {
-        return id;
+    public String getOutline() {
+        return outline;
     }
 
-    public void setId(Integer id) {
-        this.id = id == null ? null : id;
+    public void setOutline(String outline) {
+        this.outline = outline == null ? null : outline.trim();
     }
 
     public String getContent() {

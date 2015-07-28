@@ -5,15 +5,17 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="issueDate" property="issuedate" jdbcType="DATE" />
+    <result column="authorNo" property="authorno" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.zijin.microon.model.Article" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.zijin.microon.model.ArticleWithBLOBs" extends="BaseResultMap" >
+    <result column="outline" property="outline" jdbcType="LONGVARCHAR" />
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, issueDate
+    id, title, issueDate, authorNo
   </sql>
   <sql id="Blob_Column_List" >
-    content
+    outline, content
   </sql>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
@@ -23,21 +25,22 @@
     from article
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="queryAllArticle"  resultMap="ResultMapWithBLOBs" >
-        select * from article
-  </select>
- 
+  	<select id="queryAllArticle" resultMap="ResultMapWithBLOBs">
+		select * from article
+	</select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from article
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zijin.microon.model.Article" >
+  <insert id="insert" parameterType="com.zijin.microon.model.ArticleWithBLOBs" >
     insert into article (id, title, issueDate, 
-      content)
+      authorNo, outline, content
+      )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{issuedate,jdbcType=DATE}, 
-      #{content,jdbcType=LONGVARCHAR})
+      #{authorno,jdbcType=INTEGER}, #{outline,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.zijin.microon.model.Article" >
+  <insert id="insertSelective" parameterType="com.zijin.microon.model.ArticleWithBLOBs" >
     insert into article
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -48,6 +51,12 @@
       </if>
       <if test="issuedate != null" >
         issueDate,
+      </if>
+      <if test="authorno != null" >
+        authorNo,
+      </if>
+      <if test="outline != null" >
+        outline,
       </if>
       <if test="content != null" >
         content,
@@ -63,12 +72,18 @@
       <if test="issuedate != null" >
         #{issuedate,jdbcType=DATE},
       </if>
+      <if test="authorno != null" >
+        #{authorno,jdbcType=INTEGER},
+      </if>
+      <if test="outline != null" >
+        #{outline,jdbcType=LONGVARCHAR},
+      </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zijin.microon.model.Article" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zijin.microon.model.ArticleWithBLOBs" >
     update article
     <set >
       <if test="title != null" >
@@ -77,23 +92,32 @@
       <if test="issuedate != null" >
         issueDate = #{issuedate,jdbcType=DATE},
       </if>
+      <if test="authorno != null" >
+        authorNo = #{authorno,jdbcType=INTEGER},
+      </if>
+      <if test="outline != null" >
+        outline = #{outline,jdbcType=LONGVARCHAR},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zijin.microon.model.Article" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zijin.microon.model.ArticleWithBLOBs" >
     update article
     set title = #{title,jdbcType=VARCHAR},
       issueDate = #{issuedate,jdbcType=DATE},
+      authorNo = #{authorno,jdbcType=INTEGER},
+      outline = #{outline,jdbcType=LONGVARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zijin.microon.model.Article" >
+  <update id="updateByPrimaryKey" parameterType="com.zijin.microon.model.ArticleWithBLOBs" >
     update article
     set title = #{title,jdbcType=VARCHAR},
-      issueDate = #{issuedate,jdbcType=DATE}
+      issueDate = #{issuedate,jdbcType=DATE},
+      authorNo = #{authorno,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
