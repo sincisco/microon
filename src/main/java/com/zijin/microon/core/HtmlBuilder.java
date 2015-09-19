@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,6 +14,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 
 @Service
-public class HtmlBuilder implements ServletContextAware ,InitializingBean{
+public class HtmlBuilder implements ServletContextAware {
 	private static Log log = LogFactory.getLog(HtmlBuilder.class);
 	private ServletContext servletContext = null;
 
@@ -37,7 +40,7 @@ public class HtmlBuilder implements ServletContextAware ,InitializingBean{
 	 * 这是实际存在的jsp文件 （同时我看了一些API想找到只需要传过来一个action也可以的方法，但是找不到...请高手帮帮忙..指点一下）
 	 * 参数createPagePath为存放生成html的路径（如：/frontStage/articleMenuContent.html）
 	 **/
-	public void createStaticPage(String requestPageUrl, String htmlFilePath) throws Exception {
+	public void createStaticPage(String requestPageUrl, String htmlFilePath,Map<String, Object> model) throws Exception {
 		/**
 		 * 创建ServletContext对象，用于获取RequestDispatcher对象
 		 */
@@ -48,7 +51,13 @@ public class HtmlBuilder implements ServletContextAware ,InitializingBean{
 		 */
 		RequestDispatcher requestDispatcher = sc.getRequestDispatcher(requestPageUrl);
 
-		HttpServletRequest request = new MicroonHttpServletRequest(servletContext);
+		HttpSession httpSession=new MicroonHttpSession();
+		for (Iterator iterator = model.entrySet().iterator(); iterator.hasNext();) {
+			Map.Entry<String, Object> type = (Map.Entry<String, Object>) iterator.next();
+			httpSession.putValue(type.getKey(), type.getValue());
+			
+		}
+		HttpServletRequest request = new MicroonHttpServletRequest(servletContext,httpSession);
 		HttpServletResponse response = new MicroonHttpServletResponse();
 
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -109,31 +118,5 @@ public class HtmlBuilder implements ServletContextAware ,InitializingBean{
 
 	}
 
-	public void afterPropertiesSet() throws Exception {
-		final HtmlBuilder htmlBuilder=this;
-		Thread thread=new Thread(new Runnable() {
-			
-			public void run() {
-				try {
-					
-					while (true) {
-						if(htmlBuilder.getServletContext()!=null){
-							htmlBuilder.createStaticPage("/html/articleCategory.html", "c:\\temp\\temp.html");
-						}
-						Thread.currentThread().sleep(10000);
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					log.error(e);
-				}catch (Exception e) {
-					log.error(e);
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		thread.start();
-		
-	}
 
 }

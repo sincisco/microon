@@ -2,6 +2,7 @@ package com.zijin.microon.core;
 
 import java.util.Enumeration;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -14,9 +15,11 @@ public class MicroonHttpSession implements HttpSession {
 	private long creationTime=0L;
 	private long lastAccessedTime=0L;
 	private int maxInactiveInterval=0;
+	private ConcurrentHashMap<String, Object> map=null;
 	public MicroonHttpSession() {
 		this.creationTime=System.currentTimeMillis();
 		this.uuid=UUID.randomUUID().toString();
+		this.map= new ConcurrentHashMap<String, Object>();
 	}
 
 	public long getCreationTime() {
@@ -48,11 +51,11 @@ public class MicroonHttpSession implements HttpSession {
 	}
 
 	public Object getAttribute(String name) {
-		return null;
+		return map.get(name);
 	}
 
 	public Object getValue(String name) {
-		return null;
+		return map.get(name);
 	}
 
 	public Enumeration<String> getAttributeNames() {
@@ -64,11 +67,11 @@ public class MicroonHttpSession implements HttpSession {
 	}
 
 	public void setAttribute(String name, Object value) {
-
+		map.put(name, value);
 	}
 
 	public void putValue(String name, Object value) {
-
+		map.put(name, value);
 	}
 
 	public void removeAttribute(String name) {

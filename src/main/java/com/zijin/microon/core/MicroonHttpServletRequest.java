@@ -32,12 +32,19 @@ public class MicroonHttpServletRequest implements HttpServletRequest {
 	private static Log log = LogFactory.getLog(MicroonHttpServletRequest.class);
 	private String characterEncoding="utf-8";
 	private ServletContext servletContext=null;
+	private HttpSession httpSession=null;
 	public MicroonHttpServletRequest() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public MicroonHttpServletRequest(ServletContext servletContext) {
 		this.servletContext=servletContext;
+		this.httpSession=new MicroonHttpSession();
+	}
+	
+	public MicroonHttpServletRequest(ServletContext servletContext,HttpSession httpSession) {
+		this.servletContext=servletContext;
+		this.httpSession=httpSession;
 	}
 
 	public Object getAttribute(String name) {
@@ -50,8 +57,14 @@ public class MicroonHttpServletRequest implements HttpServletRequest {
 		return null;
 	}
 
+	
+/*	目前，许多浏览器在Content-Type头中不会指定字符编码方式，
+	那么容器就会使用"ISO-8859-1"方式解析POST数据，
+	而此时，为了向开发人员提示字符编码方式未指定，容器将会在getCharacterEncoding返回null.
+	 如果客户机没有设置字符编码信息，但是request数据又以和缺省编码方式不同的方式编码，
+	 就会发生数据破坏。setCharacterEncoding(String enc)方法可以防止这种状况发生，
+	 但是必须在解析数据或从request中读取数据之前调用。否则调用该方法不会有任何效果。*/
 	public String getCharacterEncoding() {
-		log.info("getInputStream");
 		return characterEncoding;
 	}
 
@@ -321,12 +334,11 @@ public class MicroonHttpServletRequest implements HttpServletRequest {
 	}
 
 	public HttpSession getSession(boolean create) {
-		return null;
+		return httpSession;
 	}
 
 	public HttpSession getSession() {
-		log.info("getInputStream");
-		return null;
+		return httpSession;
 	}
 
 	public boolean isRequestedSessionIdValid() {
@@ -365,12 +377,16 @@ public class MicroonHttpServletRequest implements HttpServletRequest {
 	}
 
 	public Collection<Part> getParts() throws IOException, ServletException {
-		log.info("getInputStream");
 		return null;
 	}
 
+/*	在Servlet3.0中上传文件变得非常简单。
+	我们只需通过request的getPart(String partName)
+	获取到上传的对应文件对应的Part或者通过getParts()方法获取到所有上传文件对应的Part。
+	之后我们就可以通过part的write(String fileName)方法把对应文件写入到磁盘。
+	或者通过part的getInputStream()方法获取文件对应的输入流，然后再对该输入流进行操作。
+	要使用request的getPart()或getParts()方法对上传的文件进行操作的话，有两个要注意的地方。*/
 	public Part getPart(String name) throws IOException, ServletException {
-		log.info("getInputStream");
 		return null;
 	}
 
